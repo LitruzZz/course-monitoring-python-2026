@@ -1,0 +1,132 @@
+{
+  "versions": {
+    "python": "3.12.14",
+    "django": "6.1.2",
+    "flask": "3.1.3",
+    "asgiref": "3.13.0",
+    "sqlparse": "0.6.1",
+    "sqlite": "3.53.1",
+    "ctypes": "OK"
+  },
+  "initial_checks": [
+    {
+      "command": "python -VV",
+      "result": "Python 3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]\n"
+    },
+    {
+      "command": "python -m django --version",
+      "result": "6.1.2\n"
+    },
+    {
+      "command": "python -m pip check",
+      "result": "No broken requirements found.\n"
+    },
+    {
+      "command": "python -c import sqlite3,ctypes,sys; print(sys.version); print(\"SQLite\",sqlite3.sqlite_version); print(\"ctypes OK\")",
+      "result": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]\nSQLite 3.53.1\nctypes OK\n"
+    },
+    {
+      "command": "python manage.py migrate --noinput",
+      "result": "Operations to perform:\n  Apply all migrations: admin, auth, contenttypes, sessions\nRunning migrations:\n  Applying contenttypes.0001_initial... OK\n  Applying auth.0001_initial... OK\n  Applying admin.0001_initial... OK\n  Applying admin.0002_logentry_remove_auto_add... OK\n  Applying admin.0003_logentry_add_action_flag_choices... OK\n  Applying contenttypes.0002_remove_content_type_name... OK\n  Applying auth.0002_alter_permission_name_max_length... OK\n  Applying auth.0003_alter_user_email_max_length... OK\n  Applying auth.0004_alter_user_username_opts... OK\n  Applying auth.0005_alter_user_last_login_null... OK\n  Applying auth.0006_require_contenttypes_0002... OK\n  Applying auth.0007_alter_validators_add_error_messages... OK\n  Applying auth.0008_alter_user_username_max_length... OK\n  Applying auth.0009_alter_user_last_name_max_length... OK\n  Applying auth.0010_alter_group_name_max_length... OK\n  Applying auth.0011_update_proxy_permissions... OK\n  Applying auth.0012_alter_user_first_name_max_length... OK\n  Applying sessions.0001_initial... OK\n"
+    },
+    {
+      "command": "python manage.py check",
+      "result": "System check identified no issues (0 silenced).\n"
+    },
+    {
+      "command": "python manage.py shell -c from django.http import HttpResponse; response=HttpResponse(\"Навчальний приклад\"); print(response.status_code); print(response.content.decode())",
+      "result": "12 objects imported automatically (use -v 2 for details).\n\n200\nНавчальний приклад\n"
+    }
+  ],
+  "http": [
+    {
+      "framework": "Django",
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "body_contains_django": true,
+      "body_json": null
+    },
+    {
+      "framework": "Django",
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/missing/",
+      "status": 404,
+      "content_type": "text/html; charset=utf-8",
+      "body_contains_django": true,
+      "body_json": null
+    },
+    {
+      "framework": "Flask",
+      "method": "GET",
+      "url": "http://127.0.0.1:5000/",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "body_contains_django": false,
+      "body_json": null
+    },
+    {
+      "framework": "Flask",
+      "method": "GET",
+      "url": "http://127.0.0.1:5000/devices/1",
+      "status": 200,
+      "content_type": "application/json",
+      "body_contains_django": false,
+      "body_json": {
+        "id": 1,
+        "name": "Датчик температури",
+        "serial": "T-01"
+      }
+    }
+  ],
+  "reproduction": {
+    "source_copy": "новий порожній каталог з вихідними файлами",
+    "new_venv": true,
+    "lock_matches": true,
+    "checks": [
+      {
+        "command": "python -VV",
+        "result": "Python 3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]\n"
+      },
+      {
+        "command": "python -m pip check",
+        "result": "No broken requirements found.\n"
+      },
+      {
+        "command": "python manage.py migrate --noinput",
+        "result": "Operations to perform:\n  Apply all migrations: admin, auth, contenttypes, sessions\nRunning migrations:\n  Applying contenttypes.0001_initial... OK\n  Applying auth.0001_initial... OK\n  Applying admin.0001_initial... OK\n  Applying admin.0002_logentry_remove_auto_add... OK\n  Applying admin.0003_logentry_add_action_flag_choices... OK\n  Applying contenttypes.0002_remove_content_type_name... OK\n  Applying auth.0002_alter_permission_name_max_length... OK\n  Applying auth.0003_alter_user_email_max_length... OK\n  Applying auth.0004_alter_user_username_opts... OK\n  Applying auth.0005_alter_user_last_login_null... OK\n  Applying auth.0006_require_contenttypes_0002... OK\n  Applying auth.0007_alter_validators_add_error_messages... OK\n  Applying auth.0008_alter_user_username_max_length... OK\n  Applying auth.0009_alter_user_last_name_max_length... OK\n  Applying auth.0010_alter_group_name_max_length... OK\n  Applying auth.0011_update_proxy_permissions... OK\n  Applying auth.0012_alter_user_first_name_max_length... OK\n  Applying sessions.0001_initial... OK\n"
+      },
+      {
+        "command": "python manage.py check",
+        "result": "System check identified no issues (0 silenced).\n"
+      }
+    ],
+    "http": [
+      {
+        "framework": "Django-reproduced",
+        "method": "GET",
+        "url": "http://127.0.0.1:8000/",
+        "status": 200,
+        "content_type": "text/html; charset=utf-8",
+        "body_contains_django": true,
+        "body_json": null
+      },
+      {
+        "framework": "Django-reproduced",
+        "method": "GET",
+        "url": "http://127.0.0.1:8000/missing/",
+        "status": 404,
+        "content_type": "text/html; charset=utf-8",
+        "body_contains_django": true,
+        "body_json": null
+      }
+    ]
+  },
+  "github_url": "https://github.com/LitruzZz/course-monitoring-python-2026",
+  "github_status": "Репозиторій створено; за наданим скріншотом ще без файлів",
+  "browser_review": {
+    "root": "Початкову українську сторінку Django відкрито у браузері",
+    "missing": "У браузері видно Page not found (404), Request Method GET та /missing/"
+  }
+}
